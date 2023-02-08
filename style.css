@@ -24,6 +24,17 @@ header {
   color: white;
 }
 
+#siteLogo {
+  width: 100px;
+}
+h1 {
+  font-size: 1rem;
+  color: white;
+  display: flex;
+
+  justify-content: center;
+}
+
 #result {
   grid-area: 2 / 1 / 3 / 2;
   background-color: aquamarine;
