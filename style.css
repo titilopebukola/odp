@@ -3,7 +3,7 @@
 }
 
 body {
-  background-color: forestgreen;
+  background-color: skyblue;
   color: white;
   font-family: monospace;
   display: grid;
@@ -20,7 +20,7 @@ body {
   */
 header {
   grid-area: 1 /1 /2 /3;
-  background-color: tomato;
+  background-color: rgb(142, 95, 8);
   color: white;
 }
 
@@ -41,7 +41,7 @@ header {
 
 footer {
   grid-area: 3 / 1 / 4 / 3;
-  background-color: brown;
+  background-color: rgb(142, 95, 8);
 }
 
 /* main styles */

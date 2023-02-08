@@ -77,6 +77,27 @@ function renderImages() {
   img1.src = Product.allProducts[Idx1].src;
   img2.src = Product.allProducts[Idx2].src;
   img3.src = Product.allProducts[Idx3].src;
+
+  img1.alt = Product.allProducts[Idx1].name;
+  img2.alt = Product.allProducts[Idx2].name;
+  img3.alt = Product.allProducts[Idx3].name;
 }
+function handleClick(event) {
+  if (event.target === imgContainer) {
+    alert("You've got to click on the image");
+    return;
+  }
+
+  for (let i = 0; i < Product.allProducts.length; i++) {
+    if (event.target.alt === Product.allProducts[i].name) {
+      Product.allProducts[i].clicks++;
+      break;
+    }
+  }
+  renderImages();
+}
+
+const imgContainer = document.getElementById("img-container");
+imgContainer.addEventListener("click", handleClick);
 
 renderImages();
