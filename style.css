@@ -44,7 +44,12 @@ footer {
   background-color: brown;
 }
 
-p {
-  text-align: center;
-  font-size: 2rem;
+/* main styles */
+#img-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+#img-container img {
+  max-width: 30%;
 }
