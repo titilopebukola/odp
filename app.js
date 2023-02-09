@@ -21,6 +21,9 @@ function Product(name, src) {
 
 Product.allProducts = [];
 
+let totalClicks = 0;
+const maxClicks = 6;
+
 const productNames = [
   "bag",
   "banana",
@@ -74,6 +77,7 @@ function renderImages() {
   const img2 = document.getElementById("img2");
   const img3 = document.getElementById("img3");
 
+  // change the source attribute of img1, img2 &img3 to be the src from our random products
   img1.src = Product.allProducts[Idx1].src;
   img2.src = Product.allProducts[Idx2].src;
   img3.src = Product.allProducts[Idx3].src;
@@ -81,23 +85,124 @@ function renderImages() {
   img1.alt = Product.allProducts[Idx1].name;
   img2.alt = Product.allProducts[Idx2].name;
   img3.alt = Product.allProducts[Idx3].name;
+
+  // increase the views for the three products we are looking at
+
+  Product.allProducts[Idx1].views++;
+  Product.allProducts[Idx2].views++;
+  Product.allProducts[Idx3].views++;
 }
+
+// listen for clicks on the images. check if the thing we clicked on is the container (as opposed to an image)
 function handleClick(event) {
   if (event.target === imgContainer) {
     alert("You've got to click on the image");
-    return;
+  } else {
+    totalClicks++;
   }
 
+  // To increase clicks, check every single products "name" against the alt tag of the target and increase the clicks
   for (let i = 0; i < Product.allProducts.length; i++) {
     if (event.target.alt === Product.allProducts[i].name) {
       Product.allProducts[i].clicks++;
       break;
     }
   }
+
+  // each time we clicks we need to increase clicks
+  // we need to check if we've reached the maximum number of clicks allowed
+  // if we have, don't render more images, and remove the eventlistener on the image container
+  // we haven't, render more images
+  if (totalClicks === maxClicks) {
+    alert("Thanks for voting");
+    // remove the event listener so the game ends
+    imgContainer.removeEventListener("click", handleClick);
+    renderChart();
+    return;
+  } // get three new images
   renderImages();
 }
 
 const imgContainer = document.getElementById("img-container");
 imgContainer.addEventListener("click", handleClick);
 
+// function for renderChart
+function renderChart() {
+  let labelArray = [];
+  let clicksArray = [];
+  let viewsArray = [];
+
+  for (let i = 0; i < Product.allProducts.length; i++) {
+    let product = Product.allProducts[i];
+    labelArray.push(product.name);
+    clicksArray.push(product.clicks);
+    viewsArray.push(product.views);
+  }
+  const data = {
+    labels: labelArray,
+    datasets: [
+      {
+        label: "views",
+        data: viewsArray,
+        backgroundColour: ["yellow", "pink"],
+        borderColor: ["pink", "yellow"],
+        borderWidth: 1,
+      },
+      {
+        label: "Clicks",
+        data: clicksArray,
+        backgroundColor: ["blue", "#99e600"],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const config = {
+    type: "bar",
+    data: data,
+    options: {
+      scales: {
+        x: {
+          ticks: {
+            color: "blue",
+          },
+        },
+        y: {
+          ticks: {
+            color: "blue",
+          },
+          beginAtZero: true,
+        },
+      },
+    },
+  };
+
+  let canvasChart = document.getElementById("myChart");
+  const myChart = new Chart(canvasChart, config);
+
+  const config1 = {
+    type: "line",
+    data: data,
+    options: {
+      scales: {
+        x: {
+          ticks: {
+            color: "blue",
+          },
+        },
+        y: {
+          ticks: {
+            color: "blue",
+          },
+          beginAtZero: true,
+        },
+      },
+    },
+  };
+
+  let canvasChart1 = document.getElementById("myChart1");
+  const myChart1 = new Chart(canvasChart1, config1);
+}
+
+// render the initial images
 renderImages();
