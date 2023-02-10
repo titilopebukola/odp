@@ -11,11 +11,11 @@
 // each time a new instance of the product is created, it should push itself into the array
 // call it constructor product
 
-function Product(name, src) {
+function Product(name, src, clicks, views) {
   this.name = name;
   this.src = src;
-  this.clicks = 0;
-  this.views = 0;
+  this.clicks = clicks;
+  this.views = views;
   Product.allProducts.push(this);
 }
 
@@ -45,10 +45,17 @@ const productNames = [
   "wine-glass",
 ];
 
-for (let i = 0; i < productNames.length; i++) {
-  new Product(productNames[i], `images/${productNames[i]}.jpg`);
-}
+if (localStorage.getItem("productData") == null) {
+  for (let i = 0; i < productNames.length; i++) {
+    new Product(productNames[i], `images/${productNames[i]}.jpg`, 0, 0);
+  }
+} else {
+  const productData = JSON.parse(localStorage.getItem("productData"));
 
+  for (let i = 0; i < productData.length; i++) {
+    new Product(productData[i].name, productData[i].src, productData[i].clicks, productData[i].views);
+  }
+}
 // use Google to help you write a function that will return a random number
 // the number will represent an index value for one of the items in the Product.allProducts array
 
@@ -117,6 +124,11 @@ function handleClick(event) {
     alert("Thanks for voting");
     // remove the event listener so the game ends
     imgContainer.removeEventListener("click", handleClick);
+
+    // To save the customer interractions in the localstorage
+    const productsStr = JSON.stringify(Product.allProducts);
+    localStorage.setItem("productData", productsStr);
+
     renderChart();
     return;
   } // get three new images
@@ -206,3 +218,25 @@ function renderChart() {
 
 // render the initial images
 renderImages();
+
+// function to set the theme of our website
+function setIheme() {
+  if (localStorage.getItem("theme") === "light" || localStorage.getItem("theme") === null) {
+    localStorage.setItem("theme", "dark");
+    document.body.classList.add("dark");
+  } else {
+    localStorage.setItem("theme", "light");
+    document.body.classList.remove("dark");
+  }
+}
+
+const themeBtn = document.getElementById("theme-btn");
+themeBtn.addEventListener("click", setIheme);
+
+// function to get the current of our website
+function getTheme() {
+  if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+  }
+}
+getTheme();

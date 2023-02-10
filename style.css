@@ -12,6 +12,10 @@ body {
   min-height: 100vh;
 }
 
+.dark {
+  background-color: darkblue;
+}
+
 /* grid styles */
 /* Grid area order
   grid-row-start
